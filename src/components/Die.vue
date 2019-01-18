@@ -1,5 +1,5 @@
 <template>
-    <div ref="die" class="diegrid">
+    <div ref="die" class="diegrid" @click="select" :class="{ 'keep' : keep }">
         <div v-for="(pip, index) in pips" :key="index" class="square">
             <div :class="setPipClass(value, index)"></div>
         </div>
@@ -13,16 +13,22 @@ import setPips from './../assets/setpips.js';
 export default {
     name: 'Die',
     props: {
-        value: Number
+        value: Number,
+        index: Number
     },
     data() {
         return {
-            pips: new Array(9)
+            pips: new Array(9),
+            keep: false
         }
     },
     methods: {
         setPipClass(value, index) {
             return setPips(value, index) ? 'pip': 'square';
+        },
+        select() {
+            this.$emit('keep-die', this.index);
+            this.keep = !this.keep;
         }
     }
 }
@@ -52,6 +58,10 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.keep {
+    border: 5px solid red !important;
 }
 
 </style>

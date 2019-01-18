@@ -5,8 +5,14 @@
             class="die"
             v-for="(die, index) in dice"
             :key="index"
+            :index="index"
             :value="die"
+            @keep-die="keepDie"
         />
+    </div>
+    <div :class="{ 'status-hidden': !dice.length }">
+        <p>Click any dice you would like to keep!</p>
+        <p>You have {{ rolls }} rolls remaining!</p>
     </div>
     <button @click="handleRoll()">Roll</button>
   </div>
@@ -28,23 +34,34 @@ export default {
             roller: new Roller('5d6'),
             dice: [],
             numbers: {},
-            isFourStraight: false,
-            isFiveStraight: false,
-            rolls: 3
+            keep: [],
+            rolls: 4
         }
     },
     methods: {
         handleRoll() {
-            this.dice = this.roller.roll();
+            if(!this.keep.length) {
+                this.dice = this.roller.roll();
+            } else {
+                this.dice = this.roller.roll_except(this.keep)
+            }
             this.numbers = this.roller.getNumbers();
-            // console.log(this.numbers);
             // this.$emit('pass-numbers', this.numbers);
             // TODO: pass the numbers to Vuex
+            this.rolls -= 1;
             if(this.rolls === 0) {
                 this.$emit('new-turn');
-                this.rolls = 3;
+                this.rolls = 4;
+                this.keep = [];
+                this.dice = [];
             }
-            this.rolls -= 1;
+        },
+        keepDie(index) {
+            if(this.keep.includes(index)) {
+                this.keep = this.keep.filter(i => i !== index);
+            } else {
+                this.keep.push(index);
+            }
         }
     }
 }
@@ -52,6 +69,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.status-hidden {
+    visibility: hidden;
+}
 
 .diceholder {
     background: lightcoral;
@@ -71,6 +92,7 @@ export default {
     border-radius: 25px;
     text-align: center;
     position: relative;
+    box-sizing: border-box;
 }
 
 button {

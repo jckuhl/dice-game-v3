@@ -67,7 +67,7 @@ export default class Player {
         } else if (Object.keys(this._scoreBoard.lower).includes(field)) {
             return set('lower', field, value);
         } else {
-            throw new Exception('Invalid key');
+            throw new Error('Invalid key');
         }
     }
 
@@ -77,7 +77,7 @@ export default class Player {
         } else if (Object.keys(this._scoreBoard.lower).includes(field)) {
             return this._scoreBoard.lower[field] === 'empty';
         } else {
-            throw new Exception('Invalid key');
+            throw new Error('Invalid key');
         }
     }
 }

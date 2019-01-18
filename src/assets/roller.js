@@ -17,9 +17,9 @@ export default class Roller {
         return this.values;
     }
 
-    roll_set(indices) {
+    roll_except(indices) {
         this.values = this.dice.map((die, index) => {
-            if(indices.includes(index)) {
+            if(!indices.includes(index)) {
                 return die.roll();
             } else {
                 return die.value;
