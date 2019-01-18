@@ -23,6 +23,7 @@
 import Die from './Die';
 import Roller from '../assets/roller';
 import random from '../assets/random';
+import store from './../store.js';
 
 export default {
     name: 'DiceHolder',
@@ -46,8 +47,7 @@ export default {
                 this.dice = this.roller.roll_except(this.keep)
             }
             this.numbers = this.roller.getNumbers();
-            // this.$emit('pass-numbers', this.numbers);
-            // TODO: pass the numbers to Vuex
+            store.commit('setCurrentNumbers', this.numbers);
             this.rolls -= 1;
             if(this.rolls === 0) {
                 this.$emit('new-turn');

@@ -1,7 +1,7 @@
 <template>
     <div class="center intro">
         <h1>Welcome to Studmuffin!</h1>
-        <h3>A rosing dice game!</h3>
+        <h3>A rousing dice game!</h3>
         <p>Dear Hasbro, if this game looks like Yatzee, it's because it's actually Yatzee.  I don't make money of this, don't sue me bro.</p>
         <label for="name">Please enter your name: </label>
         <input type="text" id="name" v-model="names[0]" :class="{ warning: warning}" @change="handleInput">
@@ -25,26 +25,26 @@
 </template>
 
 <script>
+import store from './../store.js';
+import router from  './../router.js';
+import Player from './../assets/player.js';
+
 export default {
     data() {
         return {
             names: [],
             picked: '',
-            warning: false
+            warning: false,
+            players: []
         }
     },
     methods: {
         playGame() {
-            if(this.names[0]) {
-                this.warning = false;
-                const gameData = {
-                    names: this.names,
-                    type: this.picked
-                }
-                this.$emit('start-game', gameData);
-            } else {
-                this.warning = true;
-            }
+            store.commit('addPlayers', [
+                new Player('Suzetta'),
+                new Player('Rosalyn')
+            ]);
+            this.$router.push('/game');
         },
         handleInput() {
             if(this.names[0]) this.warning = false;
