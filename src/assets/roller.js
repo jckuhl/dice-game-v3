@@ -17,6 +17,17 @@ export default class Roller {
         return this.values;
     }
 
+    roll_set(indices) {
+        this.values = this.dice.map((die, index) => {
+            if(indices.includes(index)) {
+                return die.roll();
+            } else {
+                return die.value;
+            }
+        });
+        return this.values;
+    }
+
     getNumbers() {
         let numbers = {}
         this.values.forEach(value => {
@@ -46,24 +57,10 @@ export default class Roller {
         return true;
     }
 
-    // validateFiveStraight() {
-    //     // Don't mutate this.values
-    //     let values = this.values;
-    //     values.sort();
-    //     for (let i = 0; i < values.length - 1; i++) {
-    //         if (Math.abs(values[i] - values[i + 1]) != 1) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
-
-    validateOfAKind(num, numbers) {
-        let counter = 0;
-        Object.values(numbers).forEach(value => {
-            if (value >= num) counter++;
-        });
-        return counter != 0 ? true : false;
+    validateOfAKind(kind) {
+        function validateKind(kind) {
+            return Object.entries(this.getNumbers).some(([k, v])=> v >= kind)
+        }
     }
 
     validateGroups(num, numbers) {
@@ -87,5 +84,62 @@ export default class Roller {
     createFiveKind(value) {
         this.values = this.values.map(val=> value);
         return this.values;
+    }
+
+    calculateScore(field) {
+        function calcUpper(field, n) {
+            if(this.getNumbers()[field]) {
+                return this.getNumbers()[field] * n;
+            }
+        }
+
+        function calcOfAKind(kind) {
+            if(this.validateKind(kind)) {
+                return this.values.reduce((x, y)=> x + y);
+            } else {
+                return 0;
+            }
+        }
+
+        function fullHouse() {
+            if(this.validateFullHouse()) {
+                return 25;
+            } else {
+                return 0;
+            }
+        }
+
+        function studmuffin() {
+            if(this.validateOfAKind(5)) {
+                return 50;
+            } else {
+                return 0
+            }
+        }
+
+        function studmuffinBonus() {
+            return 100;
+        }
+
+        function chance() {
+            return this.values.reduce((x, y)=> x + y);
+        }
+
+        const scoreFns = {
+            ones: calcUpper.bind(this, 'ones', 1),
+            twos: calcUpper.bind(this, 'ones', 2),
+            threes: calcUpper.bind(this, 'ones', 3),
+            fours: calcUpper.bind(this, 'fours' , 4),
+            fives: calcUpper.bind(this, 'fives', 5),
+            sixes: calcUpper.bind(this, 'sixes', 6),
+            threeOfAKind: calcOfAKind.bind(this, 3),
+            fourOfAKind: calcOfAKind.bind(this, 4),
+            fullHouse,
+            studmuffin,
+            studmuffinBonus,
+            chance
+        }
+
+        return scoreFns[field]();
     }
 }

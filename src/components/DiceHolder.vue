@@ -6,7 +6,7 @@
             v-for="(die, index) in dice"
             :key="index"
             :value="die"
-        >{{die}}</Die>
+        />
     </div>
     <button @click="handleRoll()">Roll</button>
   </div>
@@ -29,19 +29,22 @@ export default {
             dice: [],
             numbers: {},
             isFourStraight: false,
-            isFiveStraight: false
+            isFiveStraight: false,
+            rolls: 3
         }
     },
     methods: {
         handleRoll() {
-            if(random(1,1297) != 1296) {
-                this.dice = this.roller.roll();
-            } else {
-                this.dice = this.roller.createFiveKind(random(1,7));
-            }
+            this.dice = this.roller.roll();
             this.numbers = this.roller.getNumbers();
             // console.log(this.numbers);
-            this.$emit('pass-numbers', this.numbers);
+            // this.$emit('pass-numbers', this.numbers);
+            // TODO: pass the numbers to Vuex
+            if(this.rolls === 0) {
+                this.$emit('new-turn');
+                this.rolls = 3;
+            }
+            this.rolls -= 1;
         }
     }
 }

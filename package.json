@@ -29,7 +29,7 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-unused-var": "off",
+      "no-unused-vars": "warn",
       "no-console": "off"
     },
     "parserOptions": {

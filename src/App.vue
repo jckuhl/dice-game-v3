@@ -1,27 +1,17 @@
 <template>
-  <div id="app">
+    <div id="app">
     <Header/>
-    <div v-if="loggedIn">
-      <DiceHolder @pass-numbers="passNumbers"/>
-      <div class="container">
-        <ScoreCard
-          :aces="aces"
-          :twos="twos"
-          :threes="threes"
-          :fours="fours"
-          :fives="fives"
-          :sixes="sixes"
-          @get-score="getScore" 
-          :player="names[0]"/>
-        <ScoreCard :player="names[1]"/>
-        <ScoreCard :player="names[2]" v-if="names[2]"/>
-        <ScoreCard :player="names[1]" v-if="names[3]"/>
-      </div>
+    <div>
+        <DiceHolder />
+        <div class="container">
+            <ScoreCard :player="player1"/>
+            <ScoreCard :player="player2"/>
+        </div>
     </div>
-    <div v-else>
-      <Intro @start-game="startGame"/>
+        <!-- <div v-else>
+            <Intro @start-game="startGame"/>
+        </div> -->
     </div>
-  </div>
 </template>
 
 <script>
@@ -30,6 +20,7 @@ import Header from './components/Header';
 import DiceHolder from './components/DiceHolder';
 import ScoreCard from './components/ScoreCard';
 import Intro from './components/Intro';
+import Player from './../src/assets/player.js';
 
 export default {
     name: 'App',
@@ -41,52 +32,8 @@ export default {
     },
     data() {
         return {
-            loggedIn: false,
-            names: [
-                'Player 1',
-                'Player 2'
-            ],
-            numbers: {},
-            scores: [
-                {aces: 0},
-                {twos: 0},
-                {threes: 0},
-                {fours: 0},
-                {fives: 0},
-                {sixes: 0},
-            ],
-        }
-    },
-    methods: {
-        getScore(score) {
-            switch (score) {
-                case 'aces':
-                    this.aces = this.numbers['1'];
-                    break;
-                case 'twos':
-                    this.twos = this.numbers['2'] * 2;
-                    break;
-                case 'threes':
-                    this.threes = this.numbers['3'] * 3;
-                    break;
-                case 'fours':
-                    this.fours = this.numbers['4'] * 4;
-                    break;
-                case 'fives':
-                    this.fives = this.numbers['5'] * 5;
-                    break;
-                case 'sixes':
-                    this.sixes = this.numbers['6'] * 6;
-                    break;
-            }
-        },
-        passNumbers(numbers) {
-            this.numbers = numbers;
-        },
-        startGame(gameData) {
-            this.names = gameData.names;
-            if(!this.names[1]) this.names[1] = 'Player 2';
-            this.loggedIn = true;
+            player1: new Player('Tom'),
+            player2: new Player('Dick')
         }
     }
 }

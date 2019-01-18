@@ -8,7 +8,6 @@
 
 <script>
 
-import Pip from '../assets/pips';
 import setPips from './../assets/setpips.js';
 
 export default {
