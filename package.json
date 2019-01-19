@@ -32,7 +32,7 @@
     ],
     "rules": {
       "no-unused-vars": "warn",
-      "no-console": "off"
+      "no-console": "warn"
     },
     "parserOptions": {
       "parser": "babel-eslint"

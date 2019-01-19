@@ -14,11 +14,6 @@ export default {
     name: 'App',
     components: {
         Header,
-    },
-    data() {
-        return {
-            players: []
-        }
     }
 }
 </script>

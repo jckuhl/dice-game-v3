@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         players: [],
-        numbers: {}
+        roller: {},
+        field: '',
     },
     mutations: {
         addPlayers(state, payload) {
@@ -17,12 +18,17 @@ export default new Vuex.Store({
             return state;
         },
         setCurrentNumbers(state, payload) {
-            state.numbers = payload;
+            state.roller = payload;
+        },
+        setCurrentField(state, payload) {
+            state.field = payload
         }
     },
     getters: {
-        getCurrentNumbers(state) {
-            return state.numbers;
+        getFieldScore(state) {
+            if(typeof state.roller.calculateScore === 'function' && state.field) {
+                return state.roller.calculateScore(state.field);
+            }
         }
     }
 });

@@ -31,6 +31,16 @@ export default class Player {
         return scoreboard;
     }
 
+    getField(field) {
+        if (Object.keys(this._scoreBoard.upper).includes(field)) {
+            return this._scoreBoard.upper[field]
+        } else if (Object.keys(this._scoreBoard.lower).includes(field)) {
+            return this._scoreBoard.lower[field]
+        } else {
+            return this._scoreBoard[field];
+        }
+    }
+
     calcSubTotal(subTotalKey) {
         return Object.values(this._scoreBoard[subTotalKey])
                 .filter(value => value !== 'empty')
@@ -47,7 +57,9 @@ export default class Player {
 
     setScore(field, value) {
         function set(section, field, value) {
+            console.log(section, field, this)
             if(this._scoreBoard[section][field] === 'empty') {
+                this._scoreBoard[section][field] = value;
                 const subTotalKey = 'total' + section;
                 this._scoreBoard[subTotalKey] = this.calcSubTotal(section);
                 if (section == 'upper' && this._scoreBoard['totalupper'] >= 63
@@ -63,9 +75,9 @@ export default class Player {
         }
 
         if (Object.keys(this._scoreBoard.upper).includes(field)) {
-            return set('upper', field, value);
+            return set.bind(this, 'upper', field, value)();
         } else if (Object.keys(this._scoreBoard.lower).includes(field)) {
-            return set('lower', field, value);
+            return set.bind(this, 'lower', field, value)();
         } else {
             throw new Error('Invalid key');
         }

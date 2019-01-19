@@ -46,8 +46,7 @@ export default {
             } else {
                 this.dice = this.roller.roll_except(this.keep)
             }
-            this.numbers = this.roller.getNumbers();
-            store.commit('setCurrentNumbers', this.numbers);
+            store.commit('setCurrentNumbers', this.roller);
             this.rolls -= 1;
             if(this.rolls === 0) {
                 this.$emit('new-turn');

@@ -13,7 +13,7 @@
             <tr v-for="([key, value], index) in Object.entries(player.get('upper'))" :key="index">
                 <th>{{ key | title }}</th>
                 <td>Add up all the {{ key }}</td>
-                <td>{{ value | hideEmpty }}</td>
+                <td @click="getValue(key)">{{ value | hideEmpty }}</td>
             </tr>
             <tr>
                 <th>Bonus Studmuffin!</th>
@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <th colspan="2">Upper Section Total</th>
-                <td><span v-if="upperSectionTotal > 0">{{ upperSectionTotal }}</span></td>
+                <td><span v-if="upperSectionTotal > 0">{{ player.getField('totalupper') }}</span></td>
             </tr>
             <tr>
                 <th colspan="2">Lower Section Total</th>
@@ -40,10 +40,12 @@
 </template>
 
 <script>
+import store from '../store';
+
 export default {
     name: 'ScoreCard',
     props: {
-        player: Object
+        player: Object,
     },
     data() {
         return {
@@ -66,6 +68,13 @@ export default {
     filters: {
         hideEmpty(value) {
             return value === 'empty' ? '' : value;
+        }
+    },
+    methods: {
+        getValue(field) {
+            store.commit('setCurrentField', field);
+            const score = store.getters.getFieldScore;
+            this.player.setScore(field, score);
         }
     },
     mounted: function() {

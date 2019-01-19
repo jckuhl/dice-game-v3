@@ -58,9 +58,7 @@ export default class Roller {
     }
 
     validateOfAKind(kind) {
-        function validateKind(kind) {
-            return Object.entries(this.getNumbers).some(([k, v])=> v >= kind)
-        }
+        return Object.entries(this.getNumbers).some(([k, v])=> v >= kind)
     }
 
     validateGroups(num, numbers) {
@@ -87,9 +85,11 @@ export default class Roller {
     }
 
     calculateScore(field) {
-        function calcUpper(field, n) {
+        function calcUpper(field) {
             if(this.getNumbers()[field]) {
-                return this.getNumbers()[field] * n;
+                return this.getNumbers()[field] * field;
+            } else {
+                return 0;
             }
         }
 
@@ -126,12 +126,12 @@ export default class Roller {
         }
 
         const scoreFns = {
-            ones: calcUpper.bind(this, 'ones', 1),
-            twos: calcUpper.bind(this, 'ones', 2),
-            threes: calcUpper.bind(this, 'ones', 3),
-            fours: calcUpper.bind(this, 'fours' , 4),
-            fives: calcUpper.bind(this, 'fives', 5),
-            sixes: calcUpper.bind(this, 'sixes', 6),
+            ones: calcUpper.bind(this, 1),
+            twos: calcUpper.bind(this, 2),
+            threes: calcUpper.bind(this, 3),
+            fours: calcUpper.bind(this, 4),
+            fives: calcUpper.bind(this, 5),
+            sixes: calcUpper.bind(this, 6),
             threeOfAKind: calcOfAKind.bind(this, 3),
             fourOfAKind: calcOfAKind.bind(this, 4),
             fullHouse,
@@ -139,7 +139,6 @@ export default class Roller {
             studmuffinBonus,
             chance
         }
-
         return scoreFns[field]();
     }
 }

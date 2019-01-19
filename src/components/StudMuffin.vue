@@ -5,7 +5,8 @@
             <ScoreCard 
             v-for="(player, index) of players"
             :key="index"
-            :player="player"/>
+            :player="player"
+            />
         </div>
     </div>
 </template>
@@ -23,7 +24,8 @@ export default {
     },
     data() {
         return {
-            players: []
+            players: [],
+            roller: {}
         }
     },
     created() {
