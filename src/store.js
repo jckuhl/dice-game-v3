@@ -10,7 +10,7 @@ export default new Vuex.Store({
     },
     mutations: {
         addPlayers(state, payload) {
-            console.log(payload)
+            state.players = [];
             payload.forEach(player => {
                 state.players.push(player);
             });

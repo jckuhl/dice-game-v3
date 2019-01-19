@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Intro from './components/Intro.vue';
+import store from './store';
 
 Vue.use(Router);
 
@@ -14,7 +15,14 @@ export default new Router({
         {
             path: '/game',
             name: 'StudMuffin',
-            component: () => import( /* webpackChunkName: "Stud Muffin" */ './components/StudMuffin.vue')
+            component: () => import( /* webpackChunkName: "Stud Muffin" */ './components/StudMuffin.vue'),
+            beforeEnter: ((to, from, next)=> {
+                if(!store.state.players.length) {
+                    next({ path: '/'})
+                } else {
+                    next();
+                }
+            })
         }
     ]
 })
