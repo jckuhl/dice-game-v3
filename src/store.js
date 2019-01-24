@@ -8,6 +8,7 @@ export default new Vuex.Store({
         players: [],
         roller: {},
         field: '',
+        turn: 1
     },
     mutations: {
         addPlayers(state, payload) {
@@ -15,6 +16,7 @@ export default new Vuex.Store({
             payload.forEach(player => {
                 state.players.push(player);
             });
+            state.turn = state.players.length;    // start on the first player (turn % length === 0)
             return state;
         },
         setCurrentNumbers(state, payload) {
@@ -22,6 +24,15 @@ export default new Vuex.Store({
         },
         setCurrentField(state, payload) {
             state.field = payload
+        },
+        setTurn(state) {
+            state.players.forEach((player, index) => {
+                player.turn = false;
+                if(state.turn % state.players.length === index) {
+                    player.turn = true;
+                }
+            });
+            state.turn += 1;
         }
     },
     getters: {
@@ -29,6 +40,9 @@ export default new Vuex.Store({
             if(typeof state.roller.calculateScore === 'function' && state.field) {
                 return state.roller.calculateScore(state.field);
             }
+        },
+        validRoller(state) {
+            return state.roller.values && state.roller.values.length !== 0;
         }
     }
 });

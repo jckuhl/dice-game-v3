@@ -1,5 +1,6 @@
 export default class Player {
     constructor(name) {
+        this.turn = false;
         this.name = name;
         this._scoreBoard = {
             upper: {
@@ -57,7 +58,6 @@ export default class Player {
 
     setScore(field, value) {
         function set(section, field, value) {
-            console.log(section, field, this)
             if(this._scoreBoard[section][field] === 'empty') {
                 this._scoreBoard[section][field] = value;
                 const subTotalKey = 'total' + section;

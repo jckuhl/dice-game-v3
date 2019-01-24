@@ -53,6 +53,9 @@ export default {
                 this.rolls = 4;
                 this.keep = [];
                 this.dice = [];
+                this.roller.values = [];
+                store.commit('setCurrentNumbers', this.roller);
+                store.commit('setTurn');
             }
         },
         keepDie(index) {
@@ -62,6 +65,9 @@ export default {
                 this.keep.push(index);
             }
         }
+    },
+    created() {
+        store.commit('setTurn');
     }
 }
 </script>

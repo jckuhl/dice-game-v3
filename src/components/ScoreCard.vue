@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ player.name }} <span v-if="turn">Your Turn</span></h2>
+    <h2>{{ player.name }} <span v-if="player.turn">Your Turn</span></h2>
     <table>
         <thead>
             <tr>
@@ -35,7 +35,7 @@
             </tr>            
         </tbody>
     </table>
-    <button v-if="player === 'Player 1'">Save Grand Score!</button>
+    <button>Save Grand Score!</button>
   </div>
 </template>
 
@@ -49,7 +49,6 @@ export default {
     },
     data() {
         return {
-            turn: false,
             subtotal: 0,
             bonus: 35,
             upperSectionTotal: 0,
@@ -65,6 +64,9 @@ export default {
             grandTotal: 0
         }
     },
+    computed: {
+        
+    },
     filters: {
         hideEmpty(value) {
             return value === 'empty' ? '' : value;
@@ -72,13 +74,14 @@ export default {
     },
     methods: {
         getValue(field) {
-            store.commit('setCurrentField', field);
-            const score = store.getters.getFieldScore;
-            this.player.setScore(field, score);
+            if(this.player.turn && store.getters.validRoller) {
+                store.commit('setCurrentField', field);
+                const score = store.getters.getFieldScore;
+                this.player.setScore(field, score);
+            } else {
+                console.log('not your turn');   // TODO: replace with something on the UI
+            }
         }
-    },
-    mounted: function() {
-        this.turn = false;
     }
 }
 </script>
