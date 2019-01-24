@@ -57,7 +57,7 @@ export default {
             store.commit('setCurrentNumbers', this.roller);
             this.rolls -= 1;
             if(this.rolls === 0) {
-                this.$emit('new-turn');
+                // this.$emit('new-turn');
                 this.rolls = 4;
                 this.keep = [];
                 this.roller.values = [];

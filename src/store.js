@@ -9,7 +9,8 @@ export default new Vuex.Store({
         dice: [],
         roller: {},
         field: '',
-        turn: 0
+        turn: 0,
+        maxTurns: 0
     },
     mutations: {
         addPlayers(state, payload) {
@@ -17,6 +18,7 @@ export default new Vuex.Store({
             payload.forEach(player => {
                 state.players.push(player);
             });
+            state.maxTurns = state.players.length * 13;
             return state;
         },
         setCurrentNumbers(state, payload) {
@@ -32,7 +34,8 @@ export default new Vuex.Store({
                     player.turn = true;
                 }
             });
-            state.dice = []
+            state.dice = [];
+            state.roller.values = [];
             state.turn += 1;
         },
         setDice(state, payload) {

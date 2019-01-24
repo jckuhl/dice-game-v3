@@ -2,7 +2,9 @@
   <div class="container">
     <h1>Five Dice Stud</h1>
     <ul class="container">
-      <li><a href="/high_scores">Your High Scores</a></li>
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
+      <router-link to="/highscores">High Scores</router-link>
       <li><a href="https://github.com/jckuhl/dice-game">View On Github</a></li>
       <li><a href="https://www.projectbreakpoint.net/">Project Breakpoint</a></li>
     </ul>
@@ -24,6 +26,10 @@ export default {
   ul {
     flex: 1;
     justify-content: flex-end;
+  }
+
+  a {
+    margin: 1em;
   }
 
   li {
