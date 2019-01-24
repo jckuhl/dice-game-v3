@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         players: [],
+        dice: [],
         roller: {},
         field: '',
         turn: 0
@@ -16,7 +17,6 @@ export default new Vuex.Store({
             payload.forEach(player => {
                 state.players.push(player);
             });
-            // state.turn = state.players.length;    // start on the first player (turn % length === 0)
             return state;
         },
         setCurrentNumbers(state, payload) {
@@ -32,7 +32,11 @@ export default new Vuex.Store({
                     player.turn = true;
                 }
             });
+            state.dice = []
             state.turn += 1;
+        },
+        setDice(state, payload) {
+            state.dice = payload;
         }
     },
     getters: {
@@ -43,6 +47,9 @@ export default new Vuex.Store({
         },
         validRoller(state) {
             return state.roller.values && state.roller.values.length !== 0;
+        },
+        getDice(state) {
+            return state.dice;
         }
     }
 });

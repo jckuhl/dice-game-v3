@@ -65,6 +65,7 @@ export default {
         getValue(field) {
             if(this.player.turn && store.getters.validRoller) {
                 store.commit('setCurrentField', field);
+                store.commit('setTurn');
                 const score = store.getters.getFieldScore;
                 this.player.setScore(field, score);
             } else {

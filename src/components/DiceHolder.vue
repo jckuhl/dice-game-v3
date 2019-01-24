@@ -3,7 +3,7 @@
     <div class="diceholder">
         <Die
             class="die"
-            v-for="(die, index) in dice"
+            v-for="(die, index) in currentDice"
             :key="index"
             :index="index"
             :value="die"
@@ -24,6 +24,7 @@ import Die from './Die';
 import Roller from '../assets/roller';
 import random from '../assets/random';
 import store from './../store.js';
+import mapGetters from 'vuex';
 
 export default {
     name: 'DiceHolder',
@@ -39,6 +40,12 @@ export default {
             rolls: 4
         }
     },
+    computed: {
+        currentDice() {
+            this.dice = store.getters.getDice;
+            return this.dice
+        }
+    },
     methods: {
         handleRoll() {
             if(!this.keep.length) {
@@ -46,14 +53,15 @@ export default {
             } else {
                 this.dice = this.roller.roll_except(this.keep)
             }
+            store.commit('setDice', this.dice);
             store.commit('setCurrentNumbers', this.roller);
             this.rolls -= 1;
             if(this.rolls === 0) {
                 this.$emit('new-turn');
                 this.rolls = 4;
                 this.keep = [];
-                this.dice = [];
                 this.roller.values = [];
+                store.commit('setDice', this.dice);
                 store.commit('setCurrentNumbers', this.roller);
                 store.commit('setTurn');
             }
