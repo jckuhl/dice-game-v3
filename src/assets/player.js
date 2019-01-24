@@ -19,7 +19,9 @@ export default class Player {
                 fullHouse: 'empty',
                 studmuffin: 'empty',
                 studmuffinBonus: 'empty',
-                chance: 'empty'
+                chance: 'empty',
+                smStraight: 'empty',
+                lgStraight: 'empty'
             },
             totallower: 0,
             grandTotal: 0

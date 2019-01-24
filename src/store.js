@@ -8,7 +8,7 @@ export default new Vuex.Store({
         players: [],
         roller: {},
         field: '',
-        turn: 1
+        turn: 0
     },
     mutations: {
         addPlayers(state, payload) {
@@ -16,7 +16,7 @@ export default new Vuex.Store({
             payload.forEach(player => {
                 state.players.push(player);
             });
-            state.turn = state.players.length;    // start on the first player (turn % length === 0)
+            // state.turn = state.players.length;    // start on the first player (turn % length === 0)
             return state;
         },
         setCurrentNumbers(state, payload) {

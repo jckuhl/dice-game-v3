@@ -58,21 +58,21 @@ export default class Roller {
     }
 
     validateOfAKind(kind) {
-        return Object.entries(this.getNumbers).some(([k, v])=> v >= kind)
+        return Object.entries(this.getNumbers()).some(([k, v])=> v >= kind)
     }
 
-    validateGroups(num, numbers) {
+    validateGroups(num) {
         let pairs = [];
-        Object.entries(numbers).forEach(([key, value]) => {
+        Object.entries(this.getNumbers()).forEach(([key, value]) => {
             if (value >= num) pairs.push(key);
         });
         return pairs.length > 1 ? true : false;
     }
 
-    validateFullHouse(numbers) {
+    validateFullHouse() {
         let isThreeOfKind = false;
         let isPair = false;
-        Object.values(numbers).forEach(value => {
+        Object.values(this.getNumbers()).forEach(value => {
             if (value == 2) isPair = true;
             if (value == 3) isThreeOfKind = true;
         });
@@ -94,7 +94,7 @@ export default class Roller {
         }
 
         function calcOfAKind(kind) {
-            if(this.validateKind(kind)) {
+            if(this.validateOfAKind(kind)) {
                 return this.values.reduce((x, y)=> x + y);
             } else {
                 return 0;
@@ -118,11 +118,21 @@ export default class Roller {
         }
 
         function studmuffinBonus() {
-            return 100;
+            if(this.validateOfAKind(5)) {
+                return 100;
+            }
         }
 
         function chance() {
             return this.values.reduce((x, y)=> x + y);
+        }
+
+        function straight(size) {
+            if(this.validateStraight(size)) {
+                return size === 5 ? 40 : 30;
+            } else {
+                return 0;
+            }
         }
 
         const scoreFns = {
@@ -134,10 +144,12 @@ export default class Roller {
             sixes: calcUpper.bind(this, 6),
             threeOfAKind: calcOfAKind.bind(this, 3),
             fourOfAKind: calcOfAKind.bind(this, 4),
-            fullHouse,
-            studmuffin,
-            studmuffinBonus,
-            chance
+            fullHouse: fullHouse.bind(this),
+            studmuffin: studmuffin.bind(this),
+            studmuffinBonus: studmuffinBonus.bind(this),
+            chance: chance.bind(this),
+            smStraight: straight.bind(this, 4),
+            lgStraight: straight.bind(this, 5)
         }
         return scoreFns[field]();
     }
